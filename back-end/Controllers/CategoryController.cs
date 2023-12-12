@@ -6,7 +6,7 @@ namespace back_end.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CategoryController : Controller
+    public class CategoryController : ControllerBase
     {
 
         private IRepository repo;
@@ -15,8 +15,8 @@ namespace back_end.Controllers
             this.repo = repo;
         }
 
-        [HttpGet("[action]")]
-        public IEnumerable<LoaiSanPham> getCategories()
+        [HttpGet]
+        public IEnumerable<LoaiSanPham> categories()
         {
             return repo.getLoaiSanPhams;
         }

@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using back_end.DataAccess;
+using back_end.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace back_end.Controllers
 {
-    public class PersonController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class PersonController : ControllerBase
     {
-        public IActionResult Index()
+        private IRepository repo;
+        public PersonController(IRepository repo)
         {
-            return View();
+            this.repo = repo;
         }
+
+        //[HttpGet("[action]")]
+        //public ActionResult<IEnumerable<Person>> people()
+        //{
+            
+        //}
     }
 }

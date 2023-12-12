@@ -13,9 +13,9 @@ namespace back_end.DataAccess
         IEnumerable<LoaiSanPham> getLoaiSanPhams { get; }
 
 
-
         //SanPham
         IEnumerable<SanPham> getProducts { get; }
+
 
 
         //Cart

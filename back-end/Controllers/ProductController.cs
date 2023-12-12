@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace back_end.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ProductController : Controller
+    [Route("api/products")]
+    public class ProductController : ControllerBase
     {
         private IRepository repo;
         public ProductController(IRepository repo)
@@ -15,7 +15,7 @@ namespace back_end.Controllers
         }
 
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public IEnumerable<SanPham> getProducts()
         {
             return repo.getProducts;

@@ -6,7 +6,7 @@ namespace back_end.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BrandController : Controller
+    public class BrandController : ControllerBase
     {
         private IRepository repo;
         public BrandController(IRepository repo)
@@ -15,8 +15,8 @@ namespace back_end.Controllers
         }
 
 
-        [HttpGet("[action]")]
-        public IEnumerable<Brand> getBrands()
+        [HttpGet]
+        public IEnumerable<Brand> brands()
         {
             return repo.getBrands;
         }
