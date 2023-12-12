@@ -4,6 +4,65 @@ namespace back_end.DataAccess
 {
     public interface IRepository
     {
-        public IEnumerable<SanPham> getSanPham { get; }
+
+        //Brand
+        IEnumerable<Brand> getBrands {  get; }
+
+
+        //LoaiSanPham Category
+        IEnumerable<LoaiSanPham> getLoaiSanPhams { get; }
+
+
+
+        //SanPham
+        IEnumerable<SanPham> getProducts { get; }
+
+
+        //Cart
+
+
+
+        //Comment
+
+
+        //DatHang
+
+
+        //DatHangSanPham
+
+
+        //HoaDon
+
+
+        //KhachHang
+
+        //LoaiTaiKhoan
+
+
+        //MauSacSanPham
+
+
+        //NhanVien
+
+
+        //Person
+
+
+
+
+        //TaiKhoan
+
+
+        //ThacMacKhieuNai
+
+
+
+        //TinhTrangSanPham
+
+
+        //VaiTroNhanVien
+
+
+        //Voucher
     }
 }

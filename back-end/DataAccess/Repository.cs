@@ -9,7 +9,64 @@ namespace back_end.DataAccess
         {
             this.context = context;
         }
+        //Brand
+        public IEnumerable<Brand> getBrands => context.Brands;
 
-        public IEnumerable<SanPham> getSanPham =>context.SanPhams;
+        //LoaiSanPham Category
+        public IEnumerable<LoaiSanPham> getLoaiSanPhams => context.LoaiSanPhams;
+
+
+        //SanPham
+        public IEnumerable<SanPham> getProducts => context.SanPhams;
+
+        //Cart
+
+
+
+        //Comment
+
+
+        //DatHang
+
+
+        //DatHangSanPham
+
+
+        //HoaDon
+
+
+        //KhachHang
+
+
+
+        //LoaiTaiKhoan
+
+
+        //MauSacSanPham
+
+
+        //NhanVien
+
+
+        //Person
+
+
+
+
+
+
+        //TaiKhoan
+
+
+        //ThacMacKhieuNai
+
+
+        //TinhTrangSanPham
+
+
+        //VaiTroNhanVien
+
+
+        //Voucher
     }
 }
