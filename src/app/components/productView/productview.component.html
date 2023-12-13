@@ -1,0 +1,13 @@
+<div class="container">
+    
+
+    <div class="row">
+        <div class="col-lg-3">
+            <app-load-category (priceFilter)="getPrice($event)"></app-load-category>
+        </div>
+        
+        <div class="col-lg-9">
+            <app-load-products [priceValue]="price"></app-load-products>
+        </div>
+    </div>
+</div>
