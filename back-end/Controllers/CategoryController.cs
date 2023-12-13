@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace back_end.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/categories")]
     public class CategoryController : ControllerBase
     {
 
@@ -14,9 +14,8 @@ namespace back_end.Controllers
         {
             this.repo = repo;
         }
-
         [HttpGet]
-        public IEnumerable<LoaiSanPham> categories()
+        public IEnumerable<LoaiSanPham> getCategories()
         {
             return repo.getLoaiSanPhams;
         }

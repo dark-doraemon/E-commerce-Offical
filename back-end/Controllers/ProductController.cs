@@ -14,7 +14,6 @@ namespace back_end.Controllers
             this.repo = repo;
         }
 
-
         [HttpGet]
         public IEnumerable<SanPham> getProducts()
         {

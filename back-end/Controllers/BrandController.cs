@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace back_end.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/brands")]
     public class BrandController : ControllerBase
     {
         private IRepository repo;
