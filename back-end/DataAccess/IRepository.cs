@@ -1,8 +1,9 @@
-﻿using back_end.Models;
+﻿using back_end.DTOs;
+using back_end.Models;
 
 namespace back_end.DataAccess
 {
-    public interface IRepository
+    public interface IRepository 
     {
 
         //Brand
@@ -35,6 +36,8 @@ namespace back_end.DataAccess
 
 
         //KhachHang
+        string CreateMaKhachHang();
+        bool AddKhachHang(string makhachhang);
 
         //LoaiTaiKhoan
 
@@ -43,16 +46,18 @@ namespace back_end.DataAccess
 
 
         //NhanVien
+        string CreateMaNhanVien();
+        bool AddNhanVien(string manhanvien, string mavaitro);
 
-
-        //Person
-
-
-
+        //Person    
+        IEnumerable<Person> getUsers { get; }
+        Task<Person> getUserByIdAsync(string id);
 
         //TaiKhoan
-
-
+        string CreateMaTaiKhoan();
+        bool CreateAccount(TaiKhoan newTaiKhoan);
+        bool CheckTaiKhoanExist(LoginDTO login);
+        TaiKhoan CheckTaiKhoanVaMatKhauExist(LoginDTO login);
         //ThacMacKhieuNai
 
 
@@ -64,5 +69,7 @@ namespace back_end.DataAccess
 
 
         //Voucher
+
+
     }
 }

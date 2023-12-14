@@ -1,11 +1,13 @@
 ﻿using back_end.DataAccess;
 using back_end.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace back_end.Controllers
 {
+    [Authorize] //phải xác thực mới truy cập được api
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/users")]
     public class PersonController : ControllerBase
     {
         private IRepository repo;
@@ -14,10 +16,18 @@ namespace back_end.Controllers
             this.repo = repo;
         }
 
-        //[HttpGet("[action]")]
-        //public ActionResult<IEnumerable<Person>> people()
-        //{
-            
-        //}
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IEnumerable<Person> GetUsers()
+        {
+            return repo.getUsers;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<Person> GetUserById(string id)
+        {
+            return await repo.getUserByIdAsync(id);
+        }
     }
 }

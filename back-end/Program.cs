@@ -1,6 +1,11 @@
-using back_end.DataAccess;
+﻿using back_end.DataAccess;
+using back_end.Interfaces;
 using back_end.Models;
+using back_end.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace back_end
 {
@@ -13,7 +18,19 @@ namespace back_end
             // Add services to the container.
             builder.Services.AddScoped<EcommerceContext>();
             builder.Services.AddScoped<IRepository,Repository>();
-
+            builder.Services.AddScoped<ITokenService,TokenService>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(ops =>
+                {
+                    ops.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                        .GetBytes(builder.Configuration["TokenKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+                });
 
             builder.Services.AddDbContext<EcommerceContext>(op =>
             {
@@ -39,9 +56,11 @@ namespace back_end
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+            app.UseAuthentication(); //xác thực
+
+            app.UseAuthorization(); //cho phép
 
             app.MapControllers();
 
