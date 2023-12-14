@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions;
+using back_end.Extensions;
 
 namespace back_end
 {
@@ -19,18 +21,7 @@ namespace back_end
             builder.Services.AddScoped<EcommerceContext>();
             builder.Services.AddScoped<IRepository,Repository>();
             builder.Services.AddScoped<ITokenService,TokenService>();
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(ops =>
-                {
-                    ops.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(builder.Configuration["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                    };
-                });
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             builder.Services.AddDbContext<EcommerceContext>(op =>
             {
