@@ -11,33 +11,135 @@ namespace back_end.DataAccess
         {
             this.context = context;
         }
+
         //Brand
-        public IEnumerable<Brand> GetBrands => context.Brands;
+
+        public IEnumerable<Brand> GetBrands => context.Brands.Include(b => b.SanPhams).
+            Select(b => new Brand { MaBrand =b.MaBrand,TenBrand = b.TenBrand, SanPhams = b.SanPhams});
+
+
+        public async Task<Brand> PostBrandAsync(Brand newBrand)
+        {
+            var checkBrand = context.Brands.FirstOrDefault(b => b.MaBrand == newBrand.MaBrand);
+
+            if(checkBrand != null)
+            {
+                return null;
+            }
+
+            context.Brands.Add(newBrand);
+            await context.SaveChangesAsync();
+            return newBrand;
+        }
+        public async Task<bool> DeleteBrandAsync(string brandId)
+        {
+            var checkBrand = context.Brands.FirstOrDefault(b => b.MaBrand == brandId);
+            if(checkBrand == null) {
+                return false;
+            }
+
+            context.Brands.Remove(checkBrand);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<Brand> UpdateBrandAync(Brand brand)
+        {
+            var brandNeedToBeUpdated = context.Brands.FirstOrDefault(b => b.MaBrand == brand.MaBrand);
+            if(brandNeedToBeUpdated == null) 
+            {
+                return null;
+            }
+
+            brandNeedToBeUpdated.TenBrand = brand.TenBrand;
+            context.Brands.Update(brandNeedToBeUpdated);
+            await context.SaveChangesAsync();
+            return brand;
+        }
+
 
         //LoaiSanPham Category
         public IEnumerable<LoaiSanPham> GetLoaiSanPhams => context.LoaiSanPhams;
 
 
         //SanPham
-        public IEnumerable<SanPham> GetProducts => context.SanPhams;
+
+        public string CreateMaSanPham()
+        {
+            List<string> masanphams = context.SanPhams.Select(sp => sp.MaSanPham).ToList();
+            string lastID = base.funcGetLastIndex(masanphams, 0).ToString();
+            return lastID;
+        }
+
+        public IEnumerable<SanPham> GetProducts => context.SanPhams
+            .Include(sp => sp.MaMauSacs)
+            .Include(sp => sp.MaBrandNavigation)
+            .Include(sp => sp.MaLoaiSanPhamNavigation)
+            .Include(sp => sp.MaTinhTrangNavigation)
+            .Select(sp => new SanPham
+            {
+                MaSanPham = sp.MaSanPham,
+                TenSanPham = sp.TenSanPham,
+                GiaSanPham = sp.GiaSanPham,
+                MoTaSanPham = sp.MoTaSanPham,
+                SoLuong = sp.SoLuong,
+                HinhAnhSanPham = sp.HinhAnhSanPham,
+                MaLoaiSanPhamNavigation = sp.MaLoaiSanPhamNavigation,
+                MaBrandNavigation = sp.MaBrandNavigation,
+                MaTinhTrangNavigation = sp.MaTinhTrangNavigation
+
+            });
 
         public async Task<SanPham> GetProductByIdAsync(string id)
         {
             return await context.SanPhams.FindAsync(id);
         }
 
-        public async Task<SanPham> UpdateProductAsync(SanPham product)
+        public async Task<SanPham> UpdateProductAsync(SanPham newProduct)
         {
-            if(context.SanPhams.Where(sp => sp.MaSanPham == product.MaSanPham).Any() == false)
+            var productNeedToBeUpdated = context.SanPhams.
+                FirstOrDefault(sp => sp.MaSanPham == newProduct.MaSanPham);
+            if (productNeedToBeUpdated == null)
             {
                 return null;
             }
-
-            context.SanPhams.Update(product);
+            productNeedToBeUpdated.TenSanPham = newProduct.TenSanPham;
+            productNeedToBeUpdated.GiaSanPham = newProduct.GiaSanPham;
+            productNeedToBeUpdated.MoTaSanPham = newProduct.MoTaSanPham;
+            productNeedToBeUpdated.SoLuong = newProduct.SoLuong;
+            productNeedToBeUpdated.HinhAnhSanPham = newProduct.HinhAnhSanPham;
+            productNeedToBeUpdated.MaTinhTrang = newProduct.MaTinhTrang;
+            productNeedToBeUpdated.MaBrand = newProduct.MaBrand;
+            productNeedToBeUpdated.MaLoaiSanPham = newProduct.MaLoaiSanPham;
+            context.SanPhams.Update(productNeedToBeUpdated);
             await context.SaveChangesAsync();
-            return product;
+            return newProduct;
         }
 
+        public async Task<bool> DeleteProductAsync(string productId) //xóa sản phẩm
+        {
+            var product = context.SanPhams.FirstOrDefault(p => p.MaSanPham == productId);
+            if(product == null)
+            {
+                return false;
+            }
+
+            context.SanPhams.Remove(product);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> PostProductAsync(SanPham newProduct) //thêm sản phẩm
+        {
+            var check = context.SanPhams.FirstOrDefault(p => p.MaSanPham == newProduct.MaSanPham);
+            if (check != null)
+            {
+                return false;
+            }
+
+            await context.SanPhams.AddAsync(newProduct);
+            await context.SaveChangesAsync();
+            return true;
+        }
 
         //Cart
 

@@ -16,7 +16,7 @@ namespace back_end.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<SanPham> getProducts()
+        public IEnumerable<SanPham> GetProducts()
         {
             return repo.GetProducts;
         }
@@ -27,7 +27,7 @@ namespace back_end.Controllers
             var product = await repo.GetProductByIdAsync(id);
             if(product == null)
             {
-                return NotFound();
+                return NotFound("Không tìm thấy sản phẩm");
             }
 
             return Ok(product);
@@ -56,7 +56,41 @@ namespace back_end.Controllers
             }
 
             return Ok(sanPham);
+        }
 
+        [HttpPost("postproduct")] // api/products/postproduct
+        public async Task<ActionResult<SanPham>> PostProduct(ProductDTO productDTO)
+        {
+            SanPham newProduct = new SanPham
+            {
+                MaSanPham = repo.CreateMaSanPham(),
+                TenSanPham = productDTO.tensanpham,
+                GiaSanPham = productDTO.giasanpham,
+                MoTaSanPham = productDTO.motasanpham,
+                SoLuong = productDTO.soluong,
+                HinhAnhSanPham = productDTO.hinhandsanpham,
+                MaTinhTrang = productDTO.matinhtrang,
+                MaBrand = productDTO.mabrand,
+                MaLoaiSanPham = productDTO.maloaisanpham,
+            };
+
+            var check = await repo.PostProductAsync(newProduct);
+            if(!check)
+            {
+                return BadRequest("Ops something went wrong (maybe productID)");
+            }
+            return Ok(newProduct);
+        }
+
+        [HttpDelete("[action]/{productId}")] //api/products/deleteproduct/{productId}
+        public async Task<ActionResult> DeleteProduct(string productId)
+        {
+            var check = await repo.DeleteProductAsync(productId);
+            if(check)
+            {
+                return Ok("Đã xóa thành công");
+            }
+            return BadRequest("Đã có lỗi (có thể xóa id không hợp lệ");
         }
     }
 }

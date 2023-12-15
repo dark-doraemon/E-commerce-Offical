@@ -8,6 +8,9 @@ namespace back_end.DataAccess
 
         //Brand
         IEnumerable<Brand> GetBrands { get; }
+        Task<Brand> PostBrandAsync(Brand newBrand);
+        Task<bool> DeleteBrandAsync(string brandId);
+        Task<Brand> UpdateBrandAync(Brand brand);
 
 
         //LoaiSanPham Category
@@ -15,12 +18,18 @@ namespace back_end.DataAccess
 
 
         //SanPham
-        IEnumerable<SanPham> GetProducts { get; }
 
-        Task<SanPham> GetProductByIdAsync(string id);
+        string CreateMaSanPham();
 
+        IEnumerable<SanPham> GetProducts { get; } // get san pham
 
-        Task<SanPham> UpdateProductAsync(SanPham product);
+        Task<SanPham> GetProductByIdAsync(string productId); // get san pham by id
+
+        Task<SanPham> UpdateProductAsync(SanPham product); //update san pham
+
+        Task<bool> DeleteProductAsync(string productId); //xóa sản phẩm
+
+        Task<bool> PostProductAsync(SanPham newProduct);
 
 
 
