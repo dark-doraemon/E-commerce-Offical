@@ -3,19 +3,24 @@ using back_end.Models;
 
 namespace back_end.DataAccess
 {
-    public interface IRepository 
+    public interface IRepository
     {
 
         //Brand
-        IEnumerable<Brand> getBrands {  get; }
+        IEnumerable<Brand> GetBrands { get; }
 
 
         //LoaiSanPham Category
-        IEnumerable<LoaiSanPham> getLoaiSanPhams { get; }
+        IEnumerable<LoaiSanPham> GetLoaiSanPhams { get; }
 
 
         //SanPham
-        IEnumerable<SanPham> getProducts { get; }
+        IEnumerable<SanPham> GetProducts { get; }
+
+        Task<SanPham> GetProductByIdAsync(string id);
+
+
+        Task<SanPham> UpdateProductAsync(SanPham product);
 
 
 
@@ -50,7 +55,7 @@ namespace back_end.DataAccess
         bool AddNhanVien(string manhanvien, string mavaitro);
 
         //Person    
-        IEnumerable<Person> getUsers { get; }
+        IEnumerable<Person> GetUsers { get; }
         Task<Person> getUserByIdAsync(string id);
 
         //TaiKhoan
@@ -58,8 +63,15 @@ namespace back_end.DataAccess
         bool CreateAccount(TaiKhoan newTaiKhoan);
         bool CheckTaiKhoanExist(LoginDTO login);
         TaiKhoan CheckTaiKhoanVaMatKhauExist(LoginDTO login);
-        //ThacMacKhieuNai
 
+
+        //ThacMacKhieuNai
+        string CreateMaKhieuNai();
+        Task<IEnumerable<ThacMacKhieuNai>> GetKhieuNaiAsync();
+
+        Task<bool> PostKhieuNaiAsync(ThacMacKhieuNai thongtin);
+
+        Task<bool> DeleteThacMacKhieuNaiAsync(string id);
 
 
         //TinhTrangSanPham

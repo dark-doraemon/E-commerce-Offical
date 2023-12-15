@@ -18,7 +18,7 @@ namespace back_end.Controllers
         [HttpGet]
         public IEnumerable<Brand> brands()
         {
-            return repo.getBrands;
+            return repo.GetBrands;
         }
     }
 }

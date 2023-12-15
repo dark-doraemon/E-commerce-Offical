@@ -21,11 +21,11 @@ namespace back_end.Controllers
         [HttpGet]
         public IEnumerable<Person> GetUsers()
         {
-            return repo.getUsers;
+            return repo.GetUsers;
         }
 
         [HttpGet("{id}")]
-        public async Task<Person> GetUserById(string id)
+        public async Task<ActionResult<Person>> GetUserById(string id)
         {
             return await repo.getUserByIdAsync(id);
         }

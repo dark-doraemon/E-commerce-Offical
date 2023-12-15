@@ -1,5 +1,6 @@
 ﻿using back_end.DTOs;
 using back_end.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace back_end.DataAccess
 {
@@ -11,14 +12,32 @@ namespace back_end.DataAccess
             this.context = context;
         }
         //Brand
-        public IEnumerable<Brand> getBrands => context.Brands;
+        public IEnumerable<Brand> GetBrands => context.Brands;
 
         //LoaiSanPham Category
-        public IEnumerable<LoaiSanPham> getLoaiSanPhams => context.LoaiSanPhams;
+        public IEnumerable<LoaiSanPham> GetLoaiSanPhams => context.LoaiSanPhams;
 
 
         //SanPham
-        public IEnumerable<SanPham> getProducts => context.SanPhams;
+        public IEnumerable<SanPham> GetProducts => context.SanPhams;
+
+        public async Task<SanPham> GetProductByIdAsync(string id)
+        {
+            return await context.SanPhams.FindAsync(id);
+        }
+
+        public async Task<SanPham> UpdateProductAsync(SanPham product)
+        {
+            if(context.SanPhams.Where(sp => sp.MaSanPham == product.MaSanPham).Any() == false)
+            {
+                return null;
+            }
+
+            context.SanPhams.Update(product);
+            await context.SaveChangesAsync();
+            return product;
+        }
+
 
         //Cart
 
@@ -85,7 +104,7 @@ namespace back_end.DataAccess
 
         //Person
 
-        public IEnumerable<Person> getUsers => context.People;
+        public IEnumerable<Person> GetUsers => context.People;
 
         public async Task<Person> getUserByIdAsync(string id)
         {
@@ -143,6 +162,36 @@ namespace back_end.DataAccess
         }
 
         //ThacMacKhieuNai
+        public string CreateMaKhieuNai()
+        {
+            List<string> makhieunai = context.ThacMacKhieuNais.Select(kn => kn.MaKhieuNai).ToList();
+            string lastID = "TMKN" + base.funcGetLastIndex(makhieunai, 4);
+            return lastID;
+        }
+
+        public async Task<IEnumerable<ThacMacKhieuNai>> GetKhieuNaiAsync()
+        {
+            return await context.ThacMacKhieuNais.ToListAsync();
+        }
+
+        public async Task<bool> PostKhieuNaiAsync(ThacMacKhieuNai thongtin)
+        {
+            await context.ThacMacKhieuNais.AddAsync(thongtin);
+            return await context.SaveChangesAsync() >= 1 ? true : false;
+        }
+
+        public async Task<bool> DeleteThacMacKhieuNaiAsync(string id)
+        {
+            ThacMacKhieuNai thacmackieunai = await context.ThacMacKhieuNais.FindAsync(id);
+            if (thacmackieunai == null)
+            {
+                return false;
+            }
+
+            context.ThacMacKhieuNais.Remove(thacmackieunai);
+            return await context.SaveChangesAsync() > 0 ? true : false;
+        }
+
 
 
         //TinhTrangSanPham

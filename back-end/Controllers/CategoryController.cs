@@ -14,10 +14,12 @@ namespace back_end.Controllers
         {
             this.repo = repo;
         }
+
+
         [HttpGet]
         public IEnumerable<LoaiSanPham> getCategories()
         {
-            return repo.getLoaiSanPhams;
+            return repo.GetLoaiSanPhams;
         }
     }
 }
