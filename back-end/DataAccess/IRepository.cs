@@ -73,6 +73,10 @@ namespace back_end.DataAccess
         bool CheckTaiKhoanExist(LoginDTO login);
         TaiKhoan CheckTaiKhoanVaMatKhauExist(LoginDTO login);
 
+        Task<IEnumerable<AccountDTO>> GetAccountsAync();
+
+        Task<AccountDTO> GetAccountByUserNameAync(string username);
+
 
         //ThacMacKhieuNai
         string CreateMaKhieuNai();
@@ -81,6 +85,8 @@ namespace back_end.DataAccess
         Task<bool> PostKhieuNaiAsync(ThacMacKhieuNai thongtin);
 
         Task<bool> DeleteThacMacKhieuNaiAsync(string id);
+
+
 
 
         //TinhTrangSanPham

@@ -15,14 +15,14 @@ namespace back_end.DataAccess
         //Brand
 
         public IEnumerable<Brand> GetBrands => context.Brands.Include(b => b.SanPhams).
-            Select(b => new Brand { MaBrand =b.MaBrand,TenBrand = b.TenBrand, SanPhams = b.SanPhams});
+            Select(b => new Brand { MaBrand = b.MaBrand, TenBrand = b.TenBrand, SanPhams = b.SanPhams });
 
 
         public async Task<Brand> PostBrandAsync(Brand newBrand)
         {
             var checkBrand = context.Brands.FirstOrDefault(b => b.MaBrand == newBrand.MaBrand);
 
-            if(checkBrand != null)
+            if (checkBrand != null)
             {
                 return null;
             }
@@ -34,7 +34,7 @@ namespace back_end.DataAccess
         public async Task<bool> DeleteBrandAsync(string brandId)
         {
             var checkBrand = context.Brands.FirstOrDefault(b => b.MaBrand == brandId);
-            if(checkBrand == null) {
+            if (checkBrand == null) {
                 return false;
             }
 
@@ -45,7 +45,7 @@ namespace back_end.DataAccess
         public async Task<Brand> UpdateBrandAync(Brand brand)
         {
             var brandNeedToBeUpdated = context.Brands.FirstOrDefault(b => b.MaBrand == brand.MaBrand);
-            if(brandNeedToBeUpdated == null) 
+            if (brandNeedToBeUpdated == null)
             {
                 return null;
             }
@@ -83,6 +83,9 @@ namespace back_end.DataAccess
                 MoTaSanPham = sp.MoTaSanPham,
                 SoLuong = sp.SoLuong,
                 HinhAnhSanPham = sp.HinhAnhSanPham,
+                MaTinhTrang = sp.MaTinhTrang,
+                MaBrand = sp.MaBrand,
+                MaLoaiSanPham = sp.MaLoaiSanPham,
                 MaLoaiSanPhamNavigation = sp.MaLoaiSanPhamNavigation,
                 MaBrandNavigation = sp.MaBrandNavigation,
                 MaTinhTrangNavigation = sp.MaTinhTrangNavigation
@@ -91,7 +94,21 @@ namespace back_end.DataAccess
 
         public async Task<SanPham> GetProductByIdAsync(string id)
         {
-            return await context.SanPhams.FindAsync(id);
+            return await context.SanPhams.Include(sp => sp.Comments).Where(sp => sp.MaSanPham == id)
+                .Select(sp => new SanPham
+                {
+                    MaSanPham = sp.MaSanPham,
+                    TenSanPham = sp.TenSanPham,
+                    GiaSanPham = sp.GiaSanPham,
+                    MoTaSanPham = sp.MoTaSanPham,
+                    SoLuong = sp.SoLuong,
+                    HinhAnhSanPham = sp.HinhAnhSanPham,
+                    MaLoaiSanPhamNavigation = sp.MaLoaiSanPhamNavigation,
+                    MaBrandNavigation = sp.MaBrandNavigation,
+                    MaTinhTrangNavigation = sp.MaTinhTrangNavigation,
+                    Comments = sp.Comments
+
+                }).FirstOrDefaultAsync();
         }
 
         public async Task<SanPham> UpdateProductAsync(SanPham newProduct)
@@ -118,7 +135,7 @@ namespace back_end.DataAccess
         public async Task<bool> DeleteProductAsync(string productId) //xóa sản phẩm
         {
             var product = context.SanPhams.FirstOrDefault(p => p.MaSanPham == productId);
-            if(product == null)
+            if (product == null)
             {
                 return false;
             }
@@ -160,9 +177,9 @@ namespace back_end.DataAccess
         //KhachHang
         public string CreateMaKhachHang()
         {
-            List<string> makhachhangs = context.KhachHangs.Select(kh =>kh.MaKhachHang).ToList();
+            List<string> makhachhangs = context.KhachHangs.Select(kh => kh.MaKhachHang).ToList();
             string lastID = "KH" + base.funcGetLastIndex(makhachhangs, 2);
-            return lastID;  
+            return lastID;
         }
 
         public bool AddKhachHang(string makhachhang)
@@ -193,7 +210,7 @@ namespace back_end.DataAccess
         //NhanVien
         public string CreateMaNhanVien()
         {
-            List<string> manhanviens = context.NhanViens.Select(nv =>nv.MaNhanVien ).ToList();
+            List<string> manhanviens = context.NhanViens.Select(nv => nv.MaNhanVien).ToList();
             string lastID = "NV" + base.funcGetLastIndex(manhanviens, 2);
             return lastID;
         }
@@ -219,7 +236,7 @@ namespace back_end.DataAccess
         //TaiKhoan
         public string CreateMaTaiKhoan()
         {
-            List<string> mataikhoan = context.TaiKhoans.Select(tk =>tk.MaTaiKhoan).ToList();
+            List<string> mataikhoan = context.TaiKhoans.Select(tk => tk.MaTaiKhoan).ToList();
             string lastID = "TK" + base.funcGetLastIndex(mataikhoan, 2);
             return lastID;
         }
@@ -227,7 +244,7 @@ namespace back_end.DataAccess
         public bool CreateAccount(TaiKhoan newTaiKhoan)
         {
             //kiểm tra user name có tồn tại không
-            if(context.TaiKhoans.Where(tk =>newTaiKhoan.Username.ToLower() == tk.Username.ToLower()).Any())
+            if (context.TaiKhoans.Where(tk => newTaiKhoan.Username.ToLower() == tk.Username.ToLower()).Any())
             {
                 return false;
             }
@@ -242,7 +259,7 @@ namespace back_end.DataAccess
         {
             //đầu tiên kiểm tra tài khoản có tồn tại không
             var user = context.TaiKhoans.FirstOrDefault(tk => tk.Username == login.username);
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -255,13 +272,64 @@ namespace back_end.DataAccess
             var taikhoan = context.TaiKhoans.FirstOrDefault(tk => tk.Username == login.username
             && tk.Password == login.password);
 
-            if(taikhoan == null )
+            if (taikhoan == null)
             {
                 return null;
             }
             return taikhoan;
 
         }
+
+        public async Task<IEnumerable<AccountDTO>> GetAccountsAync()
+        {
+            var accounts = await context.TaiKhoans
+                .Include(tk => tk.MaLoaiTaiKhoanNavigation)
+                .Include(tk => tk.Person).ToListAsync();
+
+
+            var accountDTOs = accounts.Select(tk => new AccountDTO
+            {
+                username = tk.Username,
+                password = tk.Password,
+                hoten = tk.Person.HoTen,
+                tuoi = tk.Person.Tuoi,
+                gioitinh = tk.Person.GioiTinh,
+                sdt = tk.Person.Sđt,
+                diachi = tk.Person.DiaChi,
+                email = tk.Person.Email,
+                loaitaikhoan = tk.MaLoaiTaiKhoanNavigation.TenLoaiTaiKhoan
+            });
+
+            return accountDTOs;
+
+        }
+
+
+        public async Task<AccountDTO> GetAccountByUserNameAync(string username)
+        {
+            var account = await context.TaiKhoans
+               .Where(tk => tk.Username == username)
+               .Include(tk => tk.MaLoaiTaiKhoanNavigation)
+               .Include(tk => tk.Person).FirstOrDefaultAsync();
+
+
+            var accountDTOs = new AccountDTO
+            {
+                username = account.Username,
+                password = account.Password,
+                hoten = account.Person.HoTen,
+                tuoi = account.Person.Tuoi,
+                gioitinh = account.Person.GioiTinh,
+                sdt = account.Person.Sđt,
+                diachi = account.Person.DiaChi,
+                email = account.Person.Email,
+                loaitaikhoan = account.MaLoaiTaiKhoanNavigation.TenLoaiTaiKhoan
+            };
+
+            return accountDTOs;
+        }
+
+
 
         //ThacMacKhieuNai
         public string CreateMaKhieuNai()

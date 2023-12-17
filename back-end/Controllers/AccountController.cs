@@ -77,5 +77,32 @@ namespace back_end.Controllers
             //JWT token này dùng để trả về thông tin người dùng
             return new UserDTO { username = loginDTO.username , token = tokenService.CreateToken(taikhoan)};
         }
+
+
+        [HttpGet] //api/account
+        public async Task<ActionResult<AccountDTO>> GetTaiKhoans()
+        {
+            var accountDTOS = await repo.GetAccountsAync();
+            if(accountDTOS == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(accountDTOS);
+
+        }
+
+        [HttpGet("{username}")] //api/account/{}
+        public async Task<ActionResult<AccountDTO>> GetTaiKhoanByUserName(string username)
+        {
+            var accountDTOS = await repo.GetAccountByUserNameAync(username);
+            if (accountDTOS == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(accountDTOS);
+
+        }
     }
 }
