@@ -20,8 +20,17 @@ import { CartComponent } from './components/cart/cart.component';
 import { HttpClientModule} from '@angular/common/http';
 import { ProductItemRowComponent } from './components/productView/load-products/product-item-row/product-item-row.component'
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from './pipes/filterCategories.pipe';
+import { FilterPipe } from './pipes/filter-categories.pipe';
 import { FilterBrandsPipe } from './pipes/filter-brands.pipe';
+import { FilterProductsPipe } from './pipes/filter-products.pipe';
+import { ItemDetailsComponent } from './components/productView/item-details/item-details.component';
+import { QlsanphamComponent } from './components/admin/qlsanpham/qlsanpham.component';
+import { QlkhachhangComponent } from './components/admin/qlkhachhang/qlkhachhang.component';
+import { QlnhanvienComponent } from './components/admin/qlnhanvien/qlnhanvien.component';
+import { QldonhangComponent } from './components/admin/qldonhang/qldonhang.component';
+import { SearchComponent } from './components/admin/search/search.component';
+import { UserdetailsComponent } from './components/userdetails/userdetails.component';
+import { SharedModule } from './modules/shared/shared.module';
 @NgModule({
     declarations: [
         AppComponent,
@@ -42,13 +51,22 @@ import { FilterBrandsPipe } from './pipes/filter-brands.pipe';
         ProductItemRowComponent,
         FilterPipe,
         FilterBrandsPipe,
+        FilterProductsPipe,
+        ItemDetailsComponent,
+        QlsanphamComponent,
+        QlkhachhangComponent,
+        QlnhanvienComponent,
+        QldonhangComponent,
+        SearchComponent,
+        UserdetailsComponent
 
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        SharedModule
     ],
     providers: [],
     bootstrap: [AppComponent]

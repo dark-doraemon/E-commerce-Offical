@@ -11,36 +11,36 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form class="form-group">
-                    <label class="form-label">Họ tên</label>
-                    <input placeholder="Họ tên" class="form-control">
+                <form class="form-group" (ngSubmit)="Register()" autocomplete="off">
+                    <!-- <label class="form-label">Họ tên</label>
+                    <input placeholder="Họ tên" class="form-control"  name="hoten" [(ngModel)]="formRegister.hoten">
 
                     <label class="form-label">Tuổi</label>
-                    <input placeholder="Tuổi" type="number" class="form-control">
+                    <input placeholder="Tuổi" type="number" name="tuoi" class="form-control" [(ngModel)]="formRegister.tuoi">
 
                     <label class="form-label">Giới tính</label>
-                    <select class="form-select" aria-label="Default select example">
+                    <select class="form-select" aria-label="Default select example" name="gioitinh" [(ngModel)]="formRegister.gioitinh">
                         <option value="0">Nam</option>
                         <option value="1">Nữ</option>
                     </select>
 
-                    <label class="form-label">Họ tên</label>
-                    <input placeholder="Họ tên" class="form-control">
+                    <label class="form-label">Địa chỉ</label>
+                    <input placeholder="Địa chỉ" class="form-control" name="diachi" [(ngModel)]="formRegister.diachi">
 
                     <label class="form-label">SĐT</label>
-                    <input placeholder="Số điện thoại" class="form-control">
+                    <input placeholder="Số điện thoại" class="form-control" name="sdt" [(ngModel)]="formRegister.sdt"> -->
 
                     <label class="form-label">Tài khoản</label>
-                    <input placeholder="username/gmail" class="form-control">
+                    <input placeholder="username/gmail" class="form-control" name="username" [(ngModel)]="formRegister.username">
 
                     <label class="form-label">Mât khẩu</label>
-                    <input placeholder="password" class="form-control">
+                    <input type="password" placeholder="password" class="form-control" name="password" [(ngModel)]="formRegister.password">
 
                     <label class="form-label">Xác nhận mật khẩu</label>
-                    <input placeholder="confirm password" class="form-control">
+                    <input type="password" placeholder="confirm password" class="form-control" name="confirmpassword" [(ngModel)]="formRegister.confirmpassword">
                     <!-- Modal footer -->
                     <div class="row mt-3 p-2">
-                        <button type="submit" class="btn btn-danger " data-bs-dismiss="modal">Đăng kí</button>
+                        <button type="submit" class="btn btn-danger " >Đăng kí</button>
                     </div>
 
                 </form>

@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Category } from '../models/Category.model';
 
 @Pipe({
     name: 'CategoriesFilter'
 })
 export class FilterPipe implements PipeTransform {
 
-    transform(value: any, filterString?: any): any {
+    transform(value: Category[], filterString?: any): any {
         if(value.length === 0 || filterString === '')
         {
             return value;

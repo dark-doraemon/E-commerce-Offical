@@ -1,3 +1,5 @@
+import { TinhTrangNavigation } from "./TinhTrangSanPham.model";
+
 export interface Product {
     maSanPham: string;
     tenSanPham: string | null;
@@ -8,4 +10,5 @@ export interface Product {
     maTinhTrang: string;
     maBrand: string;
     maLoaiSanPham: string;
+    maTinhTrangNavigation : TinhTrangNavigation;
 }

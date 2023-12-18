@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { pipe } from 'rxjs';
 import { Brand } from 'src/app/models/Brand.model';
-import { Category } from 'src/app/models/LoaiSanPham.model';
+import { Category } from 'src/app/models/Category.model';
+import { Product } from 'src/app/models/Product.model';
 import { BrandService } from 'src/app/services/brand.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { FilterService } from 'src/app/services/filter.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
     selector: 'app-load-category',
@@ -14,21 +16,33 @@ export class LoadcategoryComponent implements OnInit{
 
     categories : Category[];
     brands : Brand[];
+    products : Product[];
     categoriesSearch : string = '';
     brandsSearch : string ='';
-    @Output() priceFilter : EventEmitter<number> = new EventEmitter<number>();
 
-    constructor(private categoryService : CategoryService, private brandServices : BrandService) {}
-
-    
+    constructor(private categoryService : CategoryService, private brandServices : BrandService,
+                private filterService : FilterService,
+                private http : ProductService,
+                private productService : ProductService) {}
 
     ngOnInit(): void {
-        this.getCategories();
-        this.getBrands();
-        this.priceFilter.emit(0);
+        this.GetCategories();
+        this.GetBrands();
+        this.GetProducts();
     }
 
-    getCategories()
+    GetProducts() {
+        this.productService.GetProducts().subscribe({
+            next: (products) => {
+                this.products = products;
+                console.log(products);
+                this.productService.products.emit(products);
+            },
+            error: (error) => console.log(error)
+            
+        })
+    }
+    GetCategories()
     {
         this.categoryService.getCategories().subscribe({
             next : (categories) =>{
@@ -37,8 +51,7 @@ export class LoadcategoryComponent implements OnInit{
             error : error => console.log(error)
         })
     }
-
-    getBrands()
+    GetBrands()
     {
         this.brandServices.getBrands().subscribe({
             next : (brands) =>{
@@ -50,9 +63,50 @@ export class LoadcategoryComponent implements OnInit{
     }
 
 
-    SelectPrices(price : number)
+    SelectPrice(price : number)
     {
-        this.priceFilter.emit(price);
+        let filteredProducts : Product[] = [];
+        if(price === 0)
+        {
+            filteredProducts = this.products;
+        }
+        else if (price === 1) {
+            filteredProducts = this.products.filter(product => product.giaSanPham < 5000000);
+        } 
+        else if (price === 2) {
+            filteredProducts = this.products.filter(product => product.giaSanPham >= 5000000 && product.giaSanPham <= 7000000);
+        } 
+        else if (price === 3) {
+            filteredProducts = this.products.filter(product => product.giaSanPham >= 7000000 && product.giaSanPham <= 10000000);
+        } 
+        else if (price === 4) {
+            filteredProducts = this.products.filter(product => product.giaSanPham > 10000000);
+        } 
+
+        this.filterService.filterByPrice.emit(filteredProducts);
     }
+
+    SelectCategory(category : Category)
+    {
+        this.categoriesSearch = category.tenLoaiSanPham;
+
+
+        //emit sản phẩm đã lọc theo category
+        let filterProducts : Product[] = [];
+        filterProducts = this.products.filter(product => product.maLoaiSanPham === category.maLoaiSanPham);
+        this.filterService.filterByCategory.emit(filterProducts);
+    }
+
+    SelectBrand(brand : Brand)
+    {
+        this.brandsSearch = brand.tenBrand;
+
+        //emit sản phẩm đã lọc theo brand
+        let filterProducts : Product[] = [];
+        filterProducts = this.products.filter(product => product.maBrand === brand.maBrand);
+        this.filterService.filterByCategory.emit(filterProducts);
+
+    }
+
 
 }

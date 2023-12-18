@@ -14,7 +14,7 @@
                 <span><strong> 0912345679</strong></span><br>
 
                 <i class="fa-regular fa-envelope"></i>
-                <span><strong> lienhe@gmail.com</strong></span>
+                <span><strong> lienhe&#64;gmail.com</strong></span>
             </div>
         </div>
         <div class="col-sm-9">
@@ -37,11 +37,11 @@
     <div class="row mt-2">
         <div class="col-sm-3"></div>
         <div class="col-sm-9 ">
-            <form>
+            <form class="form-group" (ngSubmit)="PostThacMac()">
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">Họ tên</label>
-                        <input class="form-control">
+                        <input class="form-control" name="hoten" [(ngModel)]="postModel.hoten">
                     </div>
 
                     
@@ -50,28 +50,28 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">Email</label>
-                        <input class="form-control">
+                        <input class="form-control" name="email" [(ngModel)]="postModel.email">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">Điện thoại</label>
-                        <input class="form-control ">
+                        <input class="form-control" name="sdt"  [(ngModel)]="postModel.sdt">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">Tiêu đề</label>
-                        <input class="form-control">
+                        <input class="form-control" name="tieude"  [(ngModel)]="postModel.tieude">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">Nội dung</label>
-                        <textarea class="form-control" rows="5"></textarea>
+                        <textarea class="form-control" rows="5" name="noidung"  [(ngModel)]="postModel.noidung"></textarea>
                     </div>
                 </div>
 

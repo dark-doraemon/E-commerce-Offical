@@ -26,9 +26,9 @@
 
 
     <div class="row border border-black">
-        <ng-container *ngFor="let product of products">
+        <ng-container *ngFor="let product of products | filterProducts :productSearching">
             <ng-container *ngIf="gridShow; else elseBlock">
-                <app-product-item class="col-sm-3 mb-5 border border-black" [product]="product"></app-product-item>
+                <app-product-item class="col-xxl-3 col-xl-4 col-md-6 col-sm-6 col-12 mb-5 " [product]="product"></app-product-item>
             </ng-container>
             <ng-template #elseBlock>
                 <app-product-item-row class="row" [product]="product"></app-product-item-row>

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Product } from '../models/Product.model';
 import { environment } from 'src/environments/environment';
 
@@ -8,10 +8,16 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductService {
 
+    products = new EventEmitter<Product[]>();
     constructor(private http : HttpClient) { }
 
-    getProducts()
+    GetProducts()
     {
         return this.http.get<Product[]>(environment.baseApiUrl + 'products');
+    }
+
+    GetProductById(id : string)
+    {
+        return this.http.get<Product>(environment.baseApiUrl + 'products/' + id);
     }
 }
