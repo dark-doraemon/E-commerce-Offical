@@ -24,6 +24,27 @@ namespace back_end.Controllers
         [HttpPost("register")] // api/account/register
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
+            
+            if(registerDTO.username == null || registerDTO.username.Trim() == "")
+            {
+                return BadRequest("Bạn chưa nhập tài khoản");
+            }
+
+            if (registerDTO.password == null || registerDTO.password.Trim() == "")
+            {
+                return BadRequest("Bạn chưa nhập password");
+            }
+
+            if (registerDTO.confirmpassword == null || registerDTO.confirmpassword.Trim() == "")
+            {
+                return BadRequest("Bạn chưa nhập xác nhận password");
+            }
+
+            if (registerDTO.password != registerDTO.confirmpassword)
+            {
+                return BadRequest("Mật khẩu không giống nhau");
+            }
+
             string makhachhang = repo.CreateMaKhachHang();
             Person person = new Person
             {
